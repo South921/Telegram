@@ -21,7 +21,7 @@ public class TelegramController {
 
     @RequestMapping("/sendPhoneNumberCode")
     public String sendPhoneNumberCode(String phoneNumber) {
-        Telegram telegram = new Telegram();
+        Telegram telegram = new Telegram(phoneNumber);
         telegram.getClient().send(new TdApi.SetAuthenticationPhoneNumber(phoneNumber, null), telegram.new AuthorizationRequestHandler());
         telegramCommon.mapPush(phoneNumber, telegram);
         return telegram.message;

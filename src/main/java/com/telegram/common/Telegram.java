@@ -20,6 +20,7 @@ import java.util.concurrent.locks.ReentrantLock;
  * @create: 2020-03-17 14:38
  **/
 public final class Telegram {
+    private String phoneNumber;
     public Client getClient() {
         return this.client;
     }
@@ -43,7 +44,8 @@ public final class Telegram {
     private  final ConcurrentMap<Integer, TdApi.SupergroupFullInfo> supergroupsFullInfo = new ConcurrentHashMap<Integer, TdApi.SupergroupFullInfo>();
     private  volatile boolean haveAuthorization = false;
 
-    public Telegram() {
+    public Telegram(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
         if(client == null) {
             authorizationLock.lock();
             try {
@@ -294,7 +296,7 @@ public final class Telegram {
             //todo: 设置初始化参数
             case TdApi.AuthorizationStateWaitTdlibParameters.CONSTRUCTOR:
                 TdApi.TdlibParameters parameters = new TdApi.TdlibParameters();
-                parameters.databaseDirectory = "tdlib";
+                parameters.databaseDirectory = "dbDir/" + this.phoneNumber.substring(1);
                 parameters.useMessageDatabase = true;
                 parameters.useSecretChats = true;
                 parameters.apiId = 1250086;
